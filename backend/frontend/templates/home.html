@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
-
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {%block content%}
     <!-- Header-->
     <header class="bg-secondary py-5">
@@ -60,8 +60,8 @@
                 <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                   <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto" href="#"
-                      >View options</a
+                    <a class="btn btn-outline-dark mt-auto" href="{% url 'course' course.id %}"
+                    >View Course</a
                     >
                   </div>
                 </div>
@@ -92,8 +92,8 @@
               <!-- Product actions-->
               <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
-                  <a class="btn btn-outline-dark mt-auto" href="#"
-                    >View options</a
+                  <a class="btn btn-outline-dark mt-auto" href="{% url 'course' course.id %}"
+                    >View Course</a
                   >
                 </div>
               </div>

@@ -1,9 +1,18 @@
 <!-- Navigation-->
-{%load static%}
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
   <div class="container px-4 px-lg-5">
+    <button
+      class="btn btn-secondary me-5"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasTags"
+      aria-controls="offcanvasTags"
+    >
+      <i class="bi bi-list"></i>
+    </button>
     <img src="{% static 'assets/logo.png' %}" alt="logo" width="50" />
-    <a class="navbar-brand" href="{%url 'home' %}">Clastal</a>
+    <a class="navbar-brand" href="{% url 'home' %}">Clastal</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -18,55 +27,97 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{%url 'home' %}"
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
             >Home</a
           >
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'about' %}">About</a>
         </li>
-        {% if user.is_authenticated %}
-        <li class="dropdown">
-          <button
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ user.username }}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li>
-              <a class="dropdown-item" href="">Profile</a>
-            </li>
-            <div class="dropdown-divider"></div>
-            <li>
-              <a class="dropdown-item" href="">Settings</a>
-            </li>
-            <div class="dropdown-divider"></div>
-            <li>
-              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-            </li>
-            <div class="dropdown-divider"></div>
-          </ul>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">Register</a>
-        </li>
-        {% endif %}
       </ul>
-      <form class="d-flex">
-        <button class="btn btn-outline-dark" type="submit">
-          <i class="bi-cart-fill me-1"></i>
-          Cart
-          <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-        </button>
-      </form>
+      <div class="ms-auto d-flex align-items-center">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
+          <li class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ user.username }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <a class="dropdown-item" href="">Profile</a>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li>
+                <a class="dropdown-item" href="{% url 'update_user' %}"
+                  >Update profile</a
+                >
+              </li>
+              <div class="dropdown-divider"></div>
+              <li>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              </li>
+              <div class="dropdown-divider"></div>
+            </ul>
+          </li>
+        </ul>
+        {% else %}
+        <div class="navbar-nav mb-2 mb-lg-0 d-flex">
+          <div class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </div>
+          <div class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </div>
+        </div>
+        {% endif %}
+
+        <form class="d-flex ms-3">
+          <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark"
+            ><i class="bi-cart-fill me-1"></i>
+            Cart
+            <span
+              class="badge bg-dark text-white ms-1 rounded-pill"
+              id="cart_quantity"
+              >{{ cart|length }}</span
+            ></a
+          >
+        </form>
+      </div>
     </div>
   </div>
 </nav>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasTags"
+  aria-labelledby="offcanvasTagsLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title text-center" id="offcanvasTagsLabel">
+      All Tags
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="list-group">
+      {% for tag in tags %}
+      <li class="list-group-item">
+        <a href="{% url 'tag' tag.name %}">{{ tag.name }}</a>
+      </li>
+      <div class="dropdown-divider"></div>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
